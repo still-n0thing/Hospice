@@ -16,9 +16,9 @@ Hospice is a web-based hospital management portal that allows healthcare profess
 
 One of the main benefits of this project is that it provides a centralized location for healthcare professionals to access patient information, reducing the need for paper-based records and manual data entry. This can help improve the accuracy and efficiency of data management, ultimately leading to better patient outcomes.
 
-By deploying the project to Google Cloud, the portal can be accessed from anywhere with an internet connection, allowing healthcare professionals to access patient information and manage their workload remotely. This can help improve communication and collaboration between healthcare professionals, leading to a more coordinated approach to patient care.
+By deploying the project to Google Cloud, the portal can be accessed from anywhere with an internet connection, allowing healthcare professionals to access patient information and manage their workload remotely. This can help improve communication and collaboration between healthcare professionals, leading to a more coordinated and timely approach to patient care. 
 
-Overall, Hospice a hospital management portal is a valuable tool for healthcare professionals, offering a simple and effective way to manage patient information and streamline administrative tasks.
+Overall, Hospice - a hospital management portal, is a valuable tool for healthcare professionals, offering a simple and effective way to manage patient information and streamline administrative tasks.
 
 ### Built With
 
@@ -39,7 +39,7 @@ Clone the repository to get started
 
 ### Installation
 
-1. Clone the repo
+1. Clone the repository
 ```sh
 git clone https://github.com/still-n0thing/Hospice
 ```
