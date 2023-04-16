@@ -12,7 +12,7 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-Hospice is a web-based hospital management portal that allows healthcare professionals to efficiently manage patient information, medical records, appointments, and billing. The project utilizes the Flask web framework to create a simple and intuitive user interface, while SQLite is used as the backend database to store and retrieve data.
+Hospice is a web-based hospital management portal that allows healthcare professionals to efficiently manage the patient information, medical records, appointments, and billing details. The project utilizes the Flask web framework to create a simple and intuitive user interface, while SQLite is used as the backend database to store and retrieve data.
 
 One of the main benefits of this project is that it provides a centralized location for healthcare professionals to access patient information, reducing the need for paper-based records and manual data entry. This can help improve the accuracy and efficiency of data management, ultimately leading to better patient outcomes.
 
