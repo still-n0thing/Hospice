@@ -1,0 +1,157 @@
+{% extends 'layout.html' %}
+
+{% block head %}
+<script src="../static/js/cities.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container login-container">
+    <div>
+        <div class="login-form-2 text-center">
+            <h3>Update patient</h3>
+            {% if flag==0 %}
+            <form name="patient" method="POST" action={{url_for('update_patient')}} id="form1" novalidate>
+                
+                {{form.hidden_tag()}}
+                
+                <div class="form-group">
+                    {{form.patient_id.label}}
+                    {{form.patient_id(class_="form-control",placeholder="PATIENT ID")}}
+                    {% for err in form.patient_id.errors %}
+                    <span style="color: red;">[{{ err }}]</span>
+                     {% endfor %}
+                </div>
+                <div class="form-group ">
+                      
+                    {{form.submit(class_='btnSubmit text-center')}}                 
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Patient Name" value="" disabled/>
+                </div>
+                <div class="form-group">
+                    <input type="number" class="form-control" placeholder="Age" value="" min="1" disabled/>
+                </div>
+                <div class="form-group">
+                    
+                    <input name="doa" type="date" class="form-control" placeholder="Date of Admission" value="" disabled/>
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Patient SSN ID" value="" disabled/>
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Patient SSN ID" value="" disabled/>
+                </div>
+                <div class="form-group">
+                    <select id="bed-type" name="bed-type" form="patient" class="form-control" disabled>
+                        <option value="">Select a bed type....</option>
+                        <option value="general">General</option>
+                        <option value="semi">Semi</option>
+                        <option value="single">Single</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <select onchange="print_city('state', this.selectedIndex);" id="sts" name ="stt" class="form-control" disabled></select>                   
+                </div>
+                <div class="form-group">
+                    <select id ="state" class="form-control" disabled>
+                        <option value="">Select city</option>
+                    </select>                    
+                </div>
+                <div class="form-group">
+                    <input type="submit" class="btnSubmit" value="Update" disabled> 
+                                     
+                </div>
+                
+            </form>
+            {% endif %}
+
+            {% if flag==1 %}
+            {% for patient in patient_s %}
+            <form name="patient" method="POST" action={{url_for('update_result')}} id="form1" novalidate>
+                {{form.hidden_tag()}}
+                <div class="form-group">
+                    <label>Patient ID</label>
+                   
+                    <input type="text" class="form-control" placeholder="{{patient.id}}" disabled/>
+                </div>
+                <div class="form-group">
+                    <label>SSN_ID</label>
+                   
+                    <input type="text" class="form-control" placeholder="{{patient.ssn_id}}" disabled/>
+                </div>
+                
+                
+                <div class="form-group">
+                    {{form2.patient_name.label}}
+                    {{ form2.patient_name(class_="form-control",placeholder=patient.name ) }}
+                    {% for err in form2.patient_name.errors %}
+                    <span style="color: red;">[{{ err }}]</span>
+                    
+                     {% endfor %}
+                </div>
+                <div class="form-group">
+                    {{form2.patient_age.label}}
+                    {{form2.patient_age(class_="form-control",placeholder=patient.age )}}
+                    {% for err in form2.patient_age.errors %}
+                    <span style="color: red;">[{{ err }}]</span>
+                     {% endfor %}
+                </div>
+                <div class="form-group">
+                    {{form2.date.label}}
+                    {{form2.date(class_="form-control",default=patient.admission_date )}}
+                    {% for err in form2.date.errors %}
+                    <span style="color: red;">[{{ err }}]</span>
+                     {% endfor %}
+                </div>
+                <div class="form-group">
+                    {{form2.Type_of_bed.label}}
+                    {{form2.Type_of_bed(class_="form-control",placeholder=patient.bed_type,default=patient.bed_type )}}
+                    {% for err in form2.Type_of_bed.errors %}
+                    <span style="color: red;">[{{ err }}]</span>
+                     {% endfor %}
+                </div>
+                <div class="form-group">
+                    {{form2.address.label}}
+                    {{form2.address(class_="form-control",placeholder=patient.address) }}
+                    {% for err in form2.address.errors %}
+                    <span style="color: red;">[{{ err }}]</span>
+                     {% endfor %}
+                </div>
+                <div class="form-group">
+                    <label>Stored State</label>
+                    <input type="text" class="form-control" placeholder='{{patient.state}}' value="" disabled/>
+                </div>
+                <div class="form-group">
+                    <label for="stt">Update State</label>
+                    <select onchange="print_city('state', this.selectedIndex);" id="sts" name ="stt" class="form-control" required></select>                   
+                </div>
+                <div class="form-group">
+                    <label>Stored City</label>
+                <input type="text" class="form-control" placeholder='{{patient.city}}' value="" disabled/>
+            </div>
+                <div class="form-group">
+                    <label for="bed">Update City</label>
+                    <select name="state_list" id ="state" class="form-control" required>
+                    </select>                    
+                </div>
+                <div class="form-group" style="display: inline;">
+                    <!--<input type="submit" class="btnSubmit" value="Create" style="float: left; width: 50%;"/>-->
+                    {{form2.submit(class="btnSubmit")}}
+                                        
+                </div>
+            </form>
+            {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+    function Reset() {
+      document.getElementById("form1").reset();
+    }
+</script>
+<script language="javascript">print_state("sts");</script>
+{% endblock %}

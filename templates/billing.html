@@ -1,0 +1,145 @@
+{% extends 'layout.html' %}
+
+{% block head %}
+<script src="../static/js/cities.js"></script>
+{% endblock %}
+
+{% block content %}
+{% if form %}
+<div class="container login-container">
+    <div>
+        <div class="login-form-2 text-center">
+            <h4>Generate Patient Bill</h4>
+            <form name="patient" method="POST" action="{{url_for('billing')}}" id="form1" novalidate style="padding-top: 5px;">
+                {{form.hidden_tag()}}
+                <div class="form-group">
+                    {{form.patient_id(class_="form-control",placeholder="PATIENT ID")}}
+                    {% for err in form.patient_id.errors %}
+                    <span style="color: red;">[{{ err }}]</span>
+                     {% endfor %}
+                </div>
+                <div class="form-group ">
+                      
+                    {{form.submit(class_='btnSubmit text-center')}}                 
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<h4 class="text-center">Patient Details</h4>
+<table class="table table-hover table-bordered results table-striped text-center" style="border-color: var(--dark)">
+    <thead>
+      <tr>
+        <th>Patient ID</th>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Address</th>
+        <th>DOJ</th>
+        <th>Room Type</th>
+      </tr>
+      <tr class="warning no-result">
+        <td colspan="6"><i class="fa fa-warning"></i> No result</td>
+      </tr>
+    </thead>
+    <tbody>
+      {% if patient %}
+      {% for p in patient %}
+      <tr>
+        <th scope="row">{{p.id}}</th>
+        <td>{{p.name}}</td>
+        <td>{{p.age}}</td>
+        <td>{{p.address}}, {{p.city}}, {{p.state}}</td>
+        <td>{{p.admission_date}}</td>
+        <td>{{p.bed_type}}</td>
+      </tr>
+      {% endfor %}
+      {% endif %}
+      <tr style="background-color: var(--darkless);">
+        <td colspan="3">
+          📅No. of days: {{ days|string | replace("days, 0:00:00","")  }}
+        </td>
+        <td colspan="3">
+          🏥Room Charges: {% if charges %}₹{{ (charges * days)|string | replace("days, 0:00:00","") }} {% endif %}
+        </td>
+      </tr>
+      
+    </tbody>
+  </table>
+
+<!--Medicine Table-->
+<h4 class="text-center">Medicines Issued</h4>
+  <table class="table table-hover table-bordered results table-striped text-center" style="border-color: var(--dark)">
+    <thead>
+      <tr>
+        <th>Medicine ID</th>
+        <th>Medicine</th>
+        <th>Quantity Issued</th>
+        <th>Rate of Medicine</th>
+        <th>Total Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% if medicine %}
+      {% for m in medicine %}
+      <tr>
+        <th scope="row">{{m.medicine_id}}</th>
+        <td>{{m.medicine.medicine_name}}</td>
+        <td>{{m.medicine_quantity}}</td>
+        <td>{{m.medicine.medicine_amount}}</td>
+        <td>{{m.medicine.medicine_amount*m.medicine_quantity}}</td>
+      </tr>
+      {% endfor %}
+    {% endif %}
+    <tr style="background-color: var(--darkless);">
+      <td colspan="5">
+        💊 Bill for Medicines:  ₹{{mbill}}
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <!--Diagnostics Table-->
+  <h4 class="text-center">Diagnostics Charges</h4>
+  <table class="table table-hover table-bordered results table-striped text-center" style="border-color: var(--dark)">
+    <thead>
+      <tr>
+        <th>Test ID</th>
+        <th>Test Name</th>
+        <th>Test Charges</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% if tests %}
+      {% for t in tests %}
+      <tr>
+        <th scope="row">{{t.id}}</th>
+        <td>{{t.diagnosis.test_name}}</td>
+        <td>{{t.diagnosis.test_amount}}</td>
+      </tr>
+      {% endfor %}
+    {% endif %}
+    <tr style="background-color: var(--darkless);">
+      <td colspan="3">
+        🩺 Bill for Diagnostics: ₹{{tbill}}
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+{% if patient %}
+<h2 class="text-center" style="color: var(--origin); font-weight: bold; width: 350px; border: 2px dashed var(--origin); margin: auto;">Grand Total: ₹{{ tbill + mbill + total|int }}</h2>
+<div class="text-center" >
+  <form class="text-center" method="POST" action="{{url_for('discharge')}}">
+      <input name="pid" type="number" hidden value="{{patient[0].id}}"/>
+      <br/>
+       <div class="form-group text-center" >
+           <input type="submit" class="btnSubmit text-center" value="Confirm ✔" style="color: var(--light); border-radius:19px; background-color: var(--origin); width: 180px; padding: 10px;"/>               
+       </div>
+   </form> 
+</div>
+{% endif %}
+  
+
+
+{% endblock %}

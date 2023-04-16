@@ -1,0 +1,74 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="form-group" id="search_bar">
+    <input type="text" class="search form-control" placeholder="Filter by Patient ID">
+    <span class="counter"></span>
+</div>
+<br/>
+
+<table class="table table-hover table-bordered results table-striped text-center" style="border-color: var(--dark)">
+  <thead>
+    <tr>
+      <th>Patient ID</th>
+      <th>Name</th>
+      <th>Age</th>
+      <th>Address</th>
+      <th>DOJ</th>
+      <th>Room Type</th>
+    </tr>
+    <tr class="warning no-result">
+      <td colspan="6"><i class="fa fa-warning"></i> No result</td>
+    </tr>
+  </thead>
+  <tbody>
+    {% for p in patients %}
+    <tr>
+      <th scope="row">{{p.id}}</th>
+      <td>{{p.name}}</td>
+      <td>{{p.age}}</td>
+      <td>{{p.address}}, {{p.city}}, {{p.state}}</td>
+      <td>{{p.admission_date}}</td>
+      <td>{{p.bed_type}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<div class="text-center" style="margin-top: 0.5em;">
+  <h3>
+    {{ patients.count() }} Patients in Record!
+  </h3>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+    $(document).ready(function() {
+  $(".search").keyup(function () {
+    var searchTerm = $(".search").val();
+    var listItem = $('.results tbody').children('tr');
+    var searchSplit = searchTerm.replace(/ /g, "'):containsi('")
+    
+  $.extend($.expr[':'], {'containsi': function(elem, i, match, array){
+        return (elem.textContent || elem.innerText || '').toLowerCase().indexOf((match[3] || "").toLowerCase()) >= 0;
+    }
+  });
+    
+  $(".results tbody tr").not(":containsi('" + searchSplit + "')").each(function(e){
+    $(this).attr('visible','false');
+  });
+
+  $(".results tbody tr:containsi('" + searchSplit + "')").each(function(e){
+    $(this).attr('visible','true');
+  });
+
+  var jobCount = $('.results tbody tr[visible="true"]').length;
+    $('.counter').text(jobCount + ' item');
+
+  if(jobCount == '0') {$('.no-result').show();}
+    else {$('.no-result').hide();}
+		  });
+});
+</script>
+{% endblock %}

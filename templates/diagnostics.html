@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container login-container">
+    <div>
+        <div class="login-form-2 text-center">
+            <h4>Add Diagnosis</h4>
+            <form method="POST" action="{{url_for('diagnostics')}}" style="padding: 10px 10% 0px">
+              {{form.hidden_tag()}}
+                <div class="form-group">
+                   <!--- <input class="form-control" type="text" placeholder="Test Name" name="test" required/>-->
+                    {{form.diagnosis(class_="form-control")}}
+                    {% for err in form.diagnosis.errors %}
+                    <span style="color: red;">{{ err }}</span>
+                     {% endfor %}
+                </div>
+                <div class="form-group">
+                   <!--<input class="btnSubmit" type="submit" value="Add"/>-->
+                   {{form.submit(class_="btnSubmit")}}
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<h4 class="text-center">Diagnostics Conducted</h4>
+{% if tests %}
+
+  <table class="table table-hover table-bordered results table-striped text-center" style="border-color: var(--dark)">
+    <thead>
+      <tr>
+        <!--<th>Test ID</th>-->
+        <th>Test Name</th>
+        <th>Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for t in tests %}
+      <tr>
+        <!--<th scope="row">{{t.id}}</th>-->
+        <td>{{tests[t]['name']}}</td>
+        <td>{{tests[t]['amount']}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <form method="POST" action="{{url_for('update_test')}}" style="padding: 10px 10% 0px">
+    <div class="form-group text-center">
+      <input type="submit" class="btnSubmit" value="Update" style="color: var(--light); border-radius:2px; background-color: var(--origin); width: 200px; padding: 10px;"/>                   
+    </div>
+  </form>
+  {% endif %}
+{% endblock %}

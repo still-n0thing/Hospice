@@ -1,0 +1,84 @@
+{% extends "layout.html" %}
+
+{% block head %}
+    <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+<style>
+
+</style>
+{% endblock %}
+
+
+{% block content %}
+<div class="container login-container">
+    <div>
+        <div class="login-form-2 text-center">
+            <h4>Issue Medicine</h4>
+            <form name='form1' method="POST" action="{{url_for('issue_medicine')}}" style="padding: 10px 10% 0px" novalidate>
+              {{form.hidden_tag()}}
+              <div class="form-group" style="width: 300px; margin: auto; margin-bottom: 20px;">
+                {{form.medicine_name(class_="form-control selectpicker",placeholder="Medicine name")}}
+                {% for err in form.medicine_name.errors %}
+                <span style="color: red;">{{err}}</span>
+                {% endfor %}
+            </div>       
+                <div class="form-group" style="width: 300px; margin: auto;">
+                    {{form.quantity(class_="form-control",placeholder="Quantity")}}
+                    {% for err in form.quantity.errors %}
+                    <span style="color: red;">{{err}}</span>
+                    {% endfor %}
+                </div>
+                <div class="form-group">
+                  <br>
+                   {{form.submit(class_="btnSubmit")}}
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% if medicine %}
+  <table class="table table-hover table-bordered results table-striped text-center" style="border-color: var(--dark)">
+    <thead>
+      <tr>
+        <th>Medicine ID</th>
+        <th>Medicine</th>
+        <th>Quantity Issued</th>
+        <th>Rate of Medicine</th>
+        <th>Total Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for m in medicine %}
+      <tr>
+        <th scope="row">{{medicine[m]['medid']}}</th>
+        <td>{{medicine[m]['name']}}</td>
+        <td>{{medicine[m]['quantity']}}</td>
+        <td>{{medicine[m]['rate']}}</td>
+        <td>{{medicine[m]['rate']*medicine[m]['quantity']}}</td>
+      </tr>
+  
+      {% endfor %}
+    </tbody>
+  </table>
+  <form method="POST" action="{{url_for('update')}}" style="padding: 10px 10% 0px">
+  <div class="form-group text-center">
+    <input type="submit" class="btnSubmit" value="Update" style="color: var(--light); border-radius:2px; background-color: var(--origin); width: 200px; padding: 10px;"/>                   
+  </div>
+</form>
+  {% endif %}
+{% endblock %}
+
+{% block script %}
+<script>
+  $(document).ready(function(){
+    $('.selectpicker').selectpicker({
+    liveSearch: true
+ });
+ $.fn.selectpicker.Constructor.BootstrapVersion = '4';
+
+  });
+</script>
+{% endblock %}
