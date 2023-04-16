@@ -1,4 +1,4 @@
-from hms import app
+from Hospice import app
 from datetime import datetime, date
 from flask import render_template, session, url_for, request, redirect, flash, session, g
 from .Forms import Login_form, Patient_create, Patient_delete, delete_result, Patient_update, issue_medicine_form, add_diagnosis
